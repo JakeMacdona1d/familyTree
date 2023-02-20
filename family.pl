@@ -181,3 +181,11 @@ cousin_type(Person1, Person2, CousinType, Removed) :-
     Removed is Gen2 - 1.
 
 
+root_people(Person) :-
+    (parent_list([Person, _], _)
+    ;  parent_list([_, Person], _) ),
+    not(ancestor(_, Person)).
+
+
+draw_tree(Root,Gen,Descendents) :-
+    setof(X,generations(Root,X,Gen), Descendents).
