@@ -67,8 +67,6 @@ parent(Parent, Child) :-
 % married(?Husband, ?Wife).
 married(Husband, Wife) :-
     parent_list([Husband, Wife], _).
-married(Husband, Wife) :-
-    parent_list([Wife, Husband], _).
 
 % Ancestor is parent, grandparent, great-grandparent, etc. of Person
 % Order is significant.  This looks for chains between records in the parent_list data
@@ -127,9 +125,14 @@ blood(Person1,Person2) :-
 
 % Are Person1 and Person2 on the same list 2nd are of a parent_list record.
 % sibling(?Person1, Person2).
+%In setof b/c people unfortunately have two parents
 sibling(Person1, Person2) :-
-    parent(Parent, Person1),
-    parent(Parent, Person2).
+    setof(X,(
+    father(Parent, Person1),
+    father(Parent, X),
+    Person1\=X),Siblings),
+    member(Person2, Siblings).
+
 
 
 % These are pretty obvious, and really just capturing info we already can get - except that
@@ -149,8 +152,20 @@ mother(Mother, Child) :-
 % Note that some uncles may not be in a parent list arg of parent_list, but would have
 % a male record to specify gender.
 % uncle(?Uncle, ?Person). %%
+uncle(Uncle, Person) :-
+    parent(Parent, Person),
+    sibling(Parent, Sibling),
+    ((Uncle=Sibling,
+    married(Uncle,_));
+    (married(Uncle,Sibling))).
 
 % aunt(?Aunt, ?Person). %%
+aunt(Aunt, Person) :-
+    parent(Parent, Person),
+    sibling(Parent, Sibling),
+    ((Aunt=Sibling,
+    married(Aunt,_));
+    (married(Sibling,Aunt))).
 
 % cousins have a generations greater than parents and aunts/uncles.
 % cousin(?Cousin, ?Person).
@@ -188,5 +203,4 @@ root_people(Person) :-
 
 
 draw_tree(Root,Gen,Descendents) :-
-    root_people(Root),
     setof(X,generations(Root,X,Gen), Descendents).
