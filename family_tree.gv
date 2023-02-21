@@ -1,0 +1,115 @@
+// Family Tree
+digraph {
+	tom_smith [label=tom_smith]
+	evelyn_harris [label=evelyn_harris]
+	mark_smith [label=mark_smith]
+	freddy_smith [label=freddy_smith]
+	joe_smith [label=joe_smith]
+	francis_smith [label=francis_smith]
+	pam_wilson [label=pam_wilson]
+	martha_smith [label=martha_smith]
+	frederick_smith [label=frederick_smith]
+	connie_warrick [label=connie_warrick]
+	jill_smith [label=jill_smith]
+	marcus_smith [label=marcus_smith]
+	tim_smith [label=tim_smith]
+	john_smith [label=john_smith]
+	layla_morris [label=layla_morris]
+	julie_smith [label=julie_smith]
+	leslie_smith [label=leslie_smith]
+	heather_smith [label=heather_smith]
+	zach_smith [label=zach_smith]
+	edward_thompson [label=edward_thompson]
+	susan_holt [label=susan_holt]
+	leonard_thompson [label=leonard_thompson]
+	mary_thompson [label=mary_thompson]
+	list_smith [label=list_smith]
+	joe_thompson [label=joe_thompson]
+	catherine_thompson [label=catherine_thompson]
+	john_thompson [label=john_thompson]
+	carrie_thompson [label=carrie_thompson]
+	lisa_houser [label=lisa_houser]
+	lilly_thompson [label=lilly_thompson]
+	richard_thompson [label=richard_thompson]
+	marcus_thompson [label=marcus_thompson]
+	mary_snyder [label=mary_snyder]
+	jeremiah_leech [label=jeremiah_leech]
+	sally_swithers [label=sally_swithers]
+	arthur_leech [label=arthur_leech]
+	jane_smith [label=jane_smith]
+	timothy_leech [label=timothy_leech]
+	jack_leech [label=jack_leech]
+	heather_leech [label=heather_leech]
+	robert_harris [label=robert_harris]
+	julia_swift [label=julia_swift]
+	albert_harris [label=albert_harris]
+	margaret_little [label=margaret_little]
+	june_harris [label=june_harris]
+	jackie_harrie [label=jackie_harrie]
+	leonard_harris [label=leonard_harris]
+	constance_may [label=constance_may]
+	jennifer_harris [label=jennifer_harris]
+	karen_harris [label=karen_harris]
+	kenneth_harris [label=kenneth_harris]
+	beau_morris [label=beau_morris]
+	jennifer_willis [label=jennifer_willis]
+	willard_louis [label=willard_louis]
+	missy_deas [label=missy_deas]
+	jonathan_louis [label=jonathan_louis]
+	marsha_lang [label=marsha_lang]
+	tom_louis [label=tom_louis]
+	mary_louis [label=mary_louis]
+	jane_louis [label=jane_louis]
+	katie_louis [label=katie_louis]
+	julia_swift -> evelyn_harris
+	evelyn_harris -> mark_smith
+	julia_swift -> mark_smith
+	evelyn_harris -> freddy_smith
+	julia_swift -> freddy_smith
+	evelyn_harris -> joe_smith
+	julia_swift -> joe_smith
+	evelyn_harris -> francis_smith
+	julia_swift -> francis_smith
+	pam_wilson -> martha_smith
+	pam_wilson -> frederick_smith
+	connie_warrick -> jill_smith
+	connie_warrick -> marcus_smith
+	connie_warrick -> tim_smith
+	jennifer_willis -> layla_morris
+	layla_morris -> julie_smith
+	jennifer_willis -> julie_smith
+	layla_morris -> leslie_smith
+	jennifer_willis -> leslie_smith
+	layla_morris -> heather_smith
+	jennifer_willis -> heather_smith
+	layla_morris -> zach_smith
+	jennifer_willis -> zach_smith
+	susan_holt -> leonard_thompson
+	susan_holt -> mary_thompson
+	list_smith -> joe_thompson
+	list_smith -> catherine_thompson
+	list_smith -> john_thompson
+	list_smith -> carrie_thompson
+	lisa_houser -> lilly_thompson
+	lisa_houser -> richard_thompson
+	lisa_houser -> marcus_thompson
+	sally_swithers -> arthur_leech
+	jane_smith -> timothy_leech
+	jane_smith -> jack_leech
+	jane_smith -> heather_leech
+	julia_swift -> albert_harris
+	margaret_little -> june_harris
+	margaret_little -> jackie_harrie
+	margaret_little -> leonard_harris
+	constance_may -> jennifer_harris
+	constance_may -> karen_harris
+	constance_may -> kenneth_harris
+	missy_deas -> jonathan_louis
+	marsha_lang -> tom_louis
+	catherine_thompson -> mary_louis
+	list_smith -> mary_louis
+	catherine_thompson -> jane_louis
+	list_smith -> jane_louis
+	catherine_thompson -> katie_louis
+	list_smith -> katie_louis
+}
