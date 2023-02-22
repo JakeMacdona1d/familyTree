@@ -1,0 +1,67 @@
+
+ robert_harris + julia_swift :
+    [1]evelyn_harris, albert_harris
+    [2]francis_smith, freddy_smith, joe_smith, mark_smith,june_harris, jackie_harris, leonard_harris 
+    [3]jill_smith, marcus_smith, tim_smith, marcus_smith, frederick_smith,kenneth_harris,jennifer_harris, karen_harris
+
+ evelyn_harris + tom_smith :
+    [1]francis_smith, freddy_smith, joe_smith, mark_smith
+    [2]jill_smith, marcus_smith, tim_smith, marcus_smith, frederick_smith
+
+margaret_little + albert_harris :
+    [1]june_harris, jackie_harris, leonard_harris 
+    [2]kenneth_harris,jennifer_harris, karen_harris
+
+leonard_harris + list_smith 
+    [1]kenneth_harris,jennifer_harris, karen_harris
+
+freddy_smith + connie_warrick :
+    [1]jill_smith, marcus_smith, tim_smith
+
+mark_smith + pam_wilson :
+    [1]marcus_smith, frederick_smith
+
+
+___________________________________________________________________________________________
+edward_thompson +  susan_holt :
+    [1]leonard_thompson, mary_thompson
+    [2]joe_thompson,catherine_thompson,john_thompson, carrie_thompson
+    [3]lilly_thompson,richard_thompson,marcus_smith,mary_louis, jane_louis, katie_louis
+
+willard_louis + missy_deas :
+    [1]jonathan_louis
+    [2]tom_louis
+    [3]mary_louis, jane_louis, katie_louis
+
+jonathan_louis + marsha_lang
+    [1]tom_louis
+    [2]mary_louis, jane_louis, katie_louis
+
+leonard_thompson + constance_may :
+    [1]joe_thompson,catherine_thompson,john_thompson, carrie_thompson
+    [2]lilly_thompson,richard_thompson,marcus_smith,mary_louis, jane_louis, katie_louis
+
+joe_thompson + lisa_houser :
+    [1]lilly_thompson,richard_thompson,marcus_smith
+
+tom_louis + catherine_thompson :
+    [1] mary_louis, jane_louis, katie_louis
+
+
+
+_______________________________________________________________________________________________
+jeremiah_leech + sally_swithers :
+    [1]arthur_leech
+    [2]timothy_leech,jack_leech,heather_leech
+
+arthur_leech + jane_smith :
+    [1]timothy_leech,jack_leech,heather_leech
+
+
+_______________________________________________________________________________________________
+beau_morris + jennifer_harris :
+    [1]layla_morris
+    [2]heather_smith, julie_smith, leslie_smith, zach_smith
+
+john_smith + layla_morris :
+    [1]heather_smith, julie_smith, leslie_smith, zach_smith
