@@ -110,6 +110,7 @@ female_list([leslie_smith]).
 female_list([sally_swithers]).
 female_list([jane_smith]).
 female_list([heather_leech]).
+female_list([margaret_little]).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -168,6 +169,7 @@ generations_helper(Ancestor, Person, I, Gen) :-
 %right now, only looks for closest relative in respect to Person1
 least_common_ancestor(Person1, Person2, Ancestor) :-
     generations(Ancestor, Person1, Gen),
+    ancestor(Ancestor, Person2),
     I is Gen -1,
     least_common_ancestor_helper(Person1, Person2, I).
 

@@ -169,6 +169,7 @@ generations_helper(Ancestor, Person, I, Gen) :-
 %right now, only looks for closest relative in respect to Person1
 least_common_ancestor(Person1, Person2, Ancestor) :-
     generations(Ancestor, Person1, Gen),
+    ancestor(Ancestor, Person2),
     I is Gen -1,
     least_common_ancestor_helper(Person1, Person2, I).
 
@@ -176,7 +177,8 @@ least_common_ancestor(Person1, Person2, Ancestor) :-
 least_common_ancestor_helper(Person1, Person2, Gen) :-
     not(setof(X, (ancestor(X,Person1)
                ,ancestor(X,Person2)
-               ,generations(X,Person1,Gen))
+               ,(generations(X,Person1,Gen)
+                 ;generations(X,Person2,Gen))   )
              ,_));
     (I is Gen -1, I>0,
      least_common_ancestor_helper(Person1, Person2, I)).

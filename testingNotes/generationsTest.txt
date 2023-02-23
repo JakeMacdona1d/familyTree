@@ -4,7 +4,7 @@
     [2]francis_smith, freddy_smith, joe_smith, mark_smith,june_harris, jackie_harris, leonard_harris 
     [3]jill_smith, marcus_smith, tim_smith, marcus_smith, frederick_smith,kenneth_harris,jennifer_harris, karen_harris
 
- evelyn_harris + tom_smith :
+ evelyn_harris + tom_smith* :
     [1]francis_smith, freddy_smith, joe_smith, mark_smith
     [2]jill_smith, marcus_smith, tim_smith, marcus_smith, frederick_smith
 
@@ -18,12 +18,12 @@ leonard_harris + list_smith
 freddy_smith + connie_warrick :
     [1]jill_smith, marcus_smith, tim_smith
 
-mark_smith + pam_wilson :
+mark_smith* + pam_wilson :
     [1]marcus_smith, frederick_smith
 
 
 ___________________________________________________________________________________________
-edward_thompson +  susan_holt :
+edward_thompson* +  susan_holt :
     [1]leonard_thompson, mary_thompson
     [2]joe_thompson,catherine_thompson,john_thompson, carrie_thompson
     [3]lilly_thompson,richard_thompson,marcus_smith,mary_louis, jane_louis, katie_louis
@@ -48,7 +48,6 @@ tom_louis + catherine_thompson :
     [1] mary_louis, jane_louis, katie_louis
 
 
-
 _______________________________________________________________________________________________
 jeremiah_leech + sally_swithers :
     [1]arthur_leech
@@ -57,11 +56,10 @@ jeremiah_leech + sally_swithers :
 arthur_leech + jane_smith :
     [1]timothy_leech,jack_leech,heather_leech
 
-
 _______________________________________________________________________________________________
 beau_morris + jennifer_harris :
     [1]layla_morris
     [2]heather_smith, julie_smith, leslie_smith, zach_smith
 
-john_smith + layla_morris :
+john_smith* + layla_morris :
     [1]heather_smith, julie_smith, leslie_smith, zach_smith
