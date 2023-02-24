@@ -32,7 +32,7 @@ parent_list([robert_harris, julia_swift],
             [evelyn_harris, albert_harris]).
 
 parent_list([albert_harris, margaret_little],
-            [june_harris, jackie_harrie, leonard_harris]).
+            [june_harris, jackie_harris, leonard_harris]).
 
 parent_list([leonard_harris, constance_may],
             [jennifer_harris, karen_harris, kenneth_harris]).
@@ -168,20 +168,13 @@ generations_helper(Ancestor, Person, I, Gen) :-
 
 %right now, only looks for closest relative in respect to Person1
 least_common_ancestor(Person1, Person2, Ancestor) :-
-    generations(Ancestor, Person1, Gen),
+    ancestor(Ancestor, Person1),
     ancestor(Ancestor, Person2),
-    I is Gen -1,
-    least_common_ancestor_helper(Person1, Person2, I).
-
-%setof fails when theres only the empty set
-least_common_ancestor_helper(Person1, Person2, Gen) :-
-    not(setof(X, (ancestor(X,Person1)
-               ,ancestor(X,Person2)
-               ,(generations(X,Person1,Gen)
-                 ;generations(X,Person2,Gen))   )
-             ,_));
-    (I is Gen -1, I>0,
-     least_common_ancestor_helper(Person1, Person2, I)).
+    %if set is empty, then setof returns false
+    not(setof(Descendent,(
+                  descendent(Descendent, Ancestor),
+                  (ancestor(Descendent,Person1),
+                   ancestor(Descendent,Person2))),_)).
 
 % Do Person1 and Person2 have a common ancestor?
 % blood(?Person1, ?Person2). %% blood relative
@@ -194,8 +187,8 @@ blood(Person1,Person2) :-
 %In setof b/c people unfortunately have two parents
 sibling(Person1, Person2) :-
     setof(X,(
-    father(Parent, Person1),
-    father(Parent, X),
+    parent(Parent, Person1),
+    parent(Parent, X),
     Person1\=X),Siblings),
     member(Person2, Siblings).
 
@@ -205,7 +198,6 @@ sibling(Person1, Person2) :-
 father(Father, Child) :-
     parent_list([Father, _], Children),
     member(Child, Children).
-
 
 % mother(?Mother, ?Child).
 mother(Mother, Child) :-
@@ -237,29 +229,26 @@ aunt(Aunt, Person) :-
 % cousin(?Cousin, ?Person).
 
 %calls helper in setof b/c this eliminates redundant outputs
-cousin(Cousin, Person) :-
-    setof(X,cousin_helper(X, Person),Cousins),
-    member(Cousin, Cousins).
-cousin_helper(Cousin, Person) :-
-   parent(Parent, Person),
-   ancestor(Ancestor, Parent),
-   ancestor(Ancestor, Cousin),
-   not(descendent(Cousin, Parent)),
-   not(descendent(Parent, Cousin)),
-   not(sibling(Parent, Cousin)),
-   generations(Ancestor,Cousin, Gen),
-   Gen>=2.
+
+cousin(Cousin,Person) :-
+    least_common_ancestor(Cousin, Person, Ancestor),
+    parent(Ancestor, Elder),
+    ancestor(Elder, Person),
+    Elder \= Cousin,
+    not(ancestor(Elder, Cousin)),
+    not(sibling(Elder, Cousin)).
 
 %% 1st cousin, 2nd cousin, 3rd once removed, etc.
 % cousin_type(+Person1, +Person2, -CousinType, -Removed).
+
 cousin_type(Person1, Person2, CousinType, Removed) :-
     cousin(Person1, Person2),
     least_common_ancestor(Person1, Person2, Ancestor),
     generations(Ancestor, Person1, Gen1),
     generations(Ancestor, Person2, Gen2),
-    CousinType is Gen1 - Gen2 + 1,
-    Removed is Gen2 - 1.
-
+    Removed is abs(Gen2 - Gen1),
+    ((Removed > Gen1, CousinType is (Gen1 -1))
+    ;(CousinType is (Gen2 -1))).
 
 root_people(Person) :-
     (parent_list([Person, _], _)
