@@ -231,8 +231,8 @@ getMinValue(X,Y, Min) :-
     (X < Y, Min is X, !);
     Min is Y.
 
-%absolute_value(X,Val) :-
-    %(X >= 0
+absolute_value(X,Val) :-
+    (X >= 0,
 
 
 cousin_type(Person1, Person2, CousinType, Removed) :-
