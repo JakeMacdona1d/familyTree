@@ -214,7 +214,9 @@ aunt(Aunt, Person) :-
     female_list([Aunt]).
 
 % does not handle the complexities of incest,
-% like if a brother is also a cousin.
+% like if a brother is also a cousin,
+% the cousin-brother would not be considered
+% a cousin by this rule.
 cousin(Cousin,Person) :-
     %just gets one common ancestor
     (least_common_ancestor(Cousin, Person, Ancestor),!),
@@ -231,15 +233,17 @@ getMinValue(X,Y, Min) :-
     (X < Y, Min is X, !);
     Min is Y.
 
+%Yes, I am aware of the built in abs function.
+%But! For this assignment, built in functions are bad :d
 absolute_value(X,Val) :-
-    (X >= 0,
-
+    (X >= 0, Val is X, !);
+    Val is ((-1)*X).
 
 cousin_type(Person1, Person2, CousinType, Removed) :-
     cousin(Person1, Person2),
     (least_common_ancestor(Person1, Person2, Ancestor),!),
     generations(Ancestor, Person1, Gen1),
     generations(Ancestor, Person2, Gen2),
-    Removed is abs(Gen2 - Gen1),
+    absolute_value((Gen2 - Gen1), Removed),
     getMinValue(Gen1, Gen2, MinGen),
     CousinType is (MinGen - 1).
