@@ -51,8 +51,8 @@ parent_list([tom_louis, catherine_thompson],
 
 
 %testing new parents
-parent_list([kenneth_harris, test1],
-            [child, edward_thompson]).
+%parent_list([kenneth_harris, test1],
+ %           [child, edward_thompson]).
 
 male_list([kenneth_harris]).
 male_list([joe_smith]).
@@ -97,6 +97,14 @@ parent(Parent, Child) :-
     parent_list([_,Parent], Children),
     member(Child, Children).
 
+getOneParent(Parent, Child) :-
+    father(Father,Child),
+    mother(Mother,Child),
+    ((married(Father,Mother),
+    Parent=Mother);
+    parent(Parent,Child)).
+
+
 % Husband is married to Wife - note the order is significant
 % This is found in the first list of the parent_list predicate
 % married(?Husband, ?Wife).
@@ -140,11 +148,15 @@ generations_helper(Ancestor, Person, I, Gen) :-
 least_common_ancestor(Person1, Person2, Ancestor) :-
     ancestor(Ancestor, Person1),
     ancestor(Ancestor, Person2),
-    %if set is empty, then setof returns false
-    not(setof(Descendent,(
-                  descendent(Descendent, Ancestor),
-                  (ancestor(Descendent,Person1),
-                   ancestor(Descendent,Person2))),_)).
+
+    %since this will exhaustively try to prove itself true,
+    %if it returns false, then the ancestor given is true.
+    not(exists_closer_ancestor(Person1, Person2, Ancestor)).
+
+exists_closer_ancestor(Person1, Person2, Ancestor) :-
+     descendent(Descendent, Ancestor),
+     ancestor(Descendent,Person1),
+     ancestor(Descendent,Person2).
 
 % Do Person1 and Person2 have a common ancestor?
 % blood(?Person1, ?Person2). %% blood relative
@@ -201,22 +213,21 @@ aunt(Aunt, Person) :-
     sibling(Parent, Aunt),
     female_list([Aunt]).
 
-
 % does not handle the complexities of incest,
 % like if a brother is also a cousin.
 cousin(Cousin,Person) :-
     least_common_ancestor(Cousin, Person, Ancestor),
+    %would prefer to use parent, but duplicates are frowned upon :d
     parent(Ancestor, Elder),
     ancestor(Elder, Person),
-    Elder \= Cousin,
+    Elder \== Cousin,
     not(ancestor(Elder, Cousin)),
     not(sibling(Elder, Cousin)).
 
 %% 1st cousin, 2nd cousin, 3rd once removed, etc.
 % cousin_type(+Person1, +Person2, -CousinType, -Removed).
-
 getMinValue(X,Y, Min) :-
-    (X < Y, Min is X);
+    (X < Y, Min is X, !);
     Min is Y.
 
 cousin_type(Person1, Person2, CousinType, Removed) :-
