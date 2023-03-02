@@ -216,8 +216,8 @@ aunt(Aunt, Person) :-
 % does not handle the complexities of incest,
 % like if a brother is also a cousin.
 cousin(Cousin,Person) :-
-    least_common_ancestor(Cousin, Person, Ancestor),
-    %would prefer to use parent, but duplicates are frowned upon :d
+    %just gets one common ancestor
+    (least_common_ancestor(Cousin, Person, Ancestor),!),
     parent(Ancestor, Elder),
     ancestor(Elder, Person),
     Elder \== Cousin,
@@ -231,9 +231,13 @@ getMinValue(X,Y, Min) :-
     (X < Y, Min is X, !);
     Min is Y.
 
+%absolute_value(X,Val) :-
+    %(X >= 0
+
+
 cousin_type(Person1, Person2, CousinType, Removed) :-
     cousin(Person1, Person2),
-    least_common_ancestor(Person1, Person2, Ancestor),
+    (least_common_ancestor(Person1, Person2, Ancestor),!),
     generations(Ancestor, Person1, Gen1),
     generations(Ancestor, Person2, Gen2),
     Removed is abs(Gen2 - Gen1),
