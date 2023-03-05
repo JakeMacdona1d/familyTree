@@ -49,39 +49,68 @@ parent_list([jonathan_louis, marsha_lang],
 parent_list([tom_louis, catherine_thompson],
             [mary_louis, jane_louis, katie_louis]).
 
-
-%testing new parents
-%parent_list([kenneth_harris, test1],
- %           [child, edward_thompson]).
-
+male_list([robert_harris]).
+male_list([albert_harris]).
+male_list([leonard_harris]).
 male_list([kenneth_harris]).
+male_list([tom_smith]).
+male_list([freddy_smith]).
 male_list([joe_smith]).
+male_list([mark_smith]).
 male_list([tim_smith]).
 male_list([marcus_smith]).
 male_list([frederick_smith]).
+male_list([edward_thompson]).
+male_list([leonard_thompson]).
+male_list([joe_thompson]).
 male_list([richard_thompson]).
 male_list([marcus_thompson]).
+male_list([john_thompson]).
+male_list([willard_louis]).
+male_list([johnathan_louis]).
+male_list([tom_louis]).
+male_list([jeremiah_leech]).
+male_list([arthur_leech]).
 male_list([timothy_leech]).
 male_list([jack_leech]).
-male_list([zach_smith]).
+male_list([beau_morris]).
+male_list([john_leech]).
+male_list([sach_smith]).
 
+female_list([julia_swift]).
+female_list([evelyn_harris]).
 female_list([francis_smith]).
 female_list([jill_smith]).
+female_list([pam_wilson]).
 female_list([martha_smith]).
+female_list([connie_warwick]).
 female_list([june_harris]).
 female_list([jackie_harris]).
+female_list([list_smith]).
 female_list([jennifer_harris]).
 female_list([karen_harris]).
+female_list([susan_holt]).
+female_list([constance_may]).
 female_list([mary_thompson]).
+female_list([catherine_thompson]).
+female_list([lisa_houser]).
 female_list([lilly_thompson]).
 female_list([carrie_thompson]).
+female_list([mary_snyder]).
 female_list([mary_louis]).
 female_list([jane_louis]).
 female_list([katie_louis]).
+female_list([marsha_lang]).
+female_list([missy_deas]).
+female_list([jennifer_willis]).
+female_list([layla_morris]).
 female_list([heather_smith]).
 female_list([julie_smith]).
 female_list([leslie_smith]).
+female_list([sally_swithers]).
+female_list([jane_smith]).
 female_list([heather_leech]).
+female_list([margaret_little]).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -91,19 +120,11 @@ female_list([heather_leech]).
 % parent(?Parent, ?Child).
 
 parent(Parent, Child) :-
-    parent_list([Parent,_], Children),
+    parent_list([Parent, _], Children),
     member(Child, Children).
 parent(Parent, Child) :-
-    parent_list([_,Parent], Children),
+    parent_list([_, Parent], Children),
     member(Child, Children).
-
-getOneParent(Parent, Child) :-
-    father(Father,Child),
-    mother(Mother,Child),
-    ((married(Father,Mother),
-    Parent=Mother);
-    parent(Parent,Child)).
-
 
 % Husband is married to Wife - note the order is significant
 % This is found in the first list of the parent_list predicate
@@ -145,18 +166,15 @@ generations_helper(Ancestor, Person, I, Gen) :-
 % common ancestor that is fewer generations.
 % least_common_ancestor(?Person1, ?Person2, ?Ancestor).
 
+%right now, only looks for closest relative in respect to Person1
 least_common_ancestor(Person1, Person2, Ancestor) :-
     ancestor(Ancestor, Person1),
     ancestor(Ancestor, Person2),
-
-    %since this will exhaustively try to prove itself true,
-    %if it returns false, then the ancestor given is true.
-    not(exists_closer_ancestor(Person1, Person2, Ancestor)).
-
-exists_closer_ancestor(Person1, Person2, Ancestor) :-
-     descendent(Descendent, Ancestor),
-     ancestor(Descendent,Person1),
-     ancestor(Descendent,Person2).
+    %if set is empty, then setof returns false
+    not(setof(Descendent,(
+                  descendent(Descendent, Ancestor),
+                  (ancestor(Descendent,Person1),
+                   ancestor(Descendent,Person2))),_)).
 
 % Do Person1 and Person2 have a common ancestor?
 % blood(?Person1, ?Person2). %% blood relative
@@ -166,84 +184,77 @@ blood(Person1,Person2) :-
 
 % Are Person1 and Person2 on the same list 2nd are of a parent_list record.
 % sibling(?Person1, Person2).
-%
-%This will not identify half-siblings
+%In setof b/c people unfortunately have two parents
 sibling(Person1, Person2) :-
-    mother(Mother, Person1),
-    mother(Mother, Person2),
-    father(Father, Person1),
-    father(Father, Person2),
-    Person1\=Person2.
+    setof(X,(
+    parent(Parent, Person1),
+    parent(Parent, X),
+    Person1\=X),Siblings),
+    member(Person2, Siblings).
 
 % These are pretty obvious, and really just capturing info we already can get - except that
 % the gender is important.  Note that father is always first on the list in parent_list.
 % father(?Father, ?Child).
 father(Father, Child) :-
-    parent_list([Father,_], Children),
+    parent_list([Father, _], Children),
     member(Child, Children).
 
 % mother(?Mother, ?Child).
 mother(Mother, Child) :-
-    parent_list([_,Mother], Children),
+    parent_list([_, Mother], Children),
     member(Child, Children).
 
 
 % Note that some uncles may not be in a parent list arg of parent_list, but would have
 % a male record to specify gender.
+% uncle(?Uncle, ?Person). %%
+%uncle(Uncle, Person) :-
+    %parent(Parent, Person),
+    %sibling(Parent, Sibling),
+    %((Uncle=Sibling,
+    %married(Uncle,_));
+    %(married(Uncle,Sibling))).
 uncle(Uncle, Person) :-
     parent(Parent, Person),
-    sibling(Parent, Sibling),
-    ((Uncle=Sibling,
-    married(Uncle,_));
-    (married(Uncle,Sibling))).
-uncle(Uncle, Person) :-
-    parent(Parent, Person),
-   sibling(Parent, Uncle),
-  male_list([Uncle]).
+    sibling(Parent, Uncle),
+    male_list([Uncle]).
 
 % aunt(?Aunt, ?Person). %%
-aunt(Aunt, Person) :-
-    parent(Parent, Person),
-    sibling(Parent, Sibling),
-    ((Aunt=Sibling,
-    married(_,Aunt));
-    (married(Sibling,Aunt))).
 aunt(Aunt, Person) :-
     parent(Parent, Person),
     sibling(Parent, Aunt),
     female_list([Aunt]).
 
-% does not handle the complexities of incest,
-% like if a brother is also a cousin,
-% the cousin-brother would not be considered
-% a cousin by this rule.
+% cousins have a generations greater than parents and aunts/uncles.
+% cousin(?Cousin, ?Person).
+
+%calls helper in setof b/c this eliminates redundant outputs
+
 cousin(Cousin,Person) :-
-    %just gets one common ancestor
-    (least_common_ancestor(Cousin, Person, Ancestor),!),
+    least_common_ancestor(Cousin, Person, Ancestor),
     parent(Ancestor, Elder),
     ancestor(Elder, Person),
-    Elder \== Cousin,
+    Elder \= Cousin,
     not(ancestor(Elder, Cousin)),
     not(sibling(Elder, Cousin)).
 
 %% 1st cousin, 2nd cousin, 3rd once removed, etc.
 % cousin_type(+Person1, +Person2, -CousinType, -Removed).
-getMinValue(X,Y, Min) :-
-    % ! operator stops the search
-    (X < Y, Min is X, !);
-    Min is Y.
-
-%Yes, I am aware of the built in abs function.
-%But! For this assignment, built in functions are bad :d
-absolute_value(X,Val) :-
-    (X >= 0, Val is X, !);
-    Val is ((-1)*X).
-
+%
 cousin_type(Person1, Person2, CousinType, Removed) :-
     cousin(Person1, Person2),
-    (least_common_ancestor(Person1, Person2, Ancestor),!),
+    least_common_ancestor(Person1, Person2, Ancestor),
     generations(Ancestor, Person1, Gen1),
     generations(Ancestor, Person2, Gen2),
-    absolute_value((Gen2 - Gen1), Removed),
-    getMinValue(Gen1, Gen2, MinGen),
-    CousinType is (MinGen - 1).
+    Removed is abs(Gen2 - Gen1),
+    ((Removed > Gen1, CousinType is (Gen1 -1))
+    ;(CousinType is (Gen2 -1))).
+
+root_people(Person) :-
+    (parent_list([Person, _], _)
+    ;  parent_list([_, Person], _) ),
+    not(ancestor(_, Person)).
+
+
+draw_tree(Root,Gen,Descendents) :-
+    setof(X,generations(Root,X,Gen), Descendents).

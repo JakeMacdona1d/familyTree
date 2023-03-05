@@ -97,13 +97,6 @@ parent(Parent, Child) :-
     parent_list([_,Parent], Children),
     member(Child, Children).
 
-getOneParent(Parent, Child) :-
-    father(Father,Child),
-    mother(Mother,Child),
-    ((married(Father,Mother),
-    Parent=Mother);
-    parent(Parent,Child)).
-
 
 % Husband is married to Wife - note the order is significant
 % This is found in the first list of the parent_list predicate
