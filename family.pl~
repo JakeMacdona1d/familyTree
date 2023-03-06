@@ -1,3 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ECE3520/CpSc3520 SDE1: Prolog Declarative and Logic Programming
+
+% Use the following Prolog relations as a database of familial
+% relationships for 4 generations of people.  If you find obvious
+% minor errors (typos) you may correct them.  You may add additional
+% data if you like but you do not have to.
+
+% Then write Prolog rules to encode the relations listed at the bottomG.
+% You may create additional predicates as needed to accomplish this,
+% including relations for debugging or extra relations as you desire.
+% All should be included when you turn this in.  Your rules must be able
+% to work on any data and across as many generations as the data specifies.
+% They may not be specific to this data.
+
+% Using SWI-Prolog, run your code, demonstrating that it works in all modes.
+% Log this session and turn it in with your code in this (modified) file.
+% You examples should demonstrate working across 4 generations where
+% applicable.
+
+% Fact recording Predicates:
+
+% list of two parents, father first, then list of all children
+% parent_list(?Parent_list, ?Child_list).
+
+% Data:
+
 parent_list([tom_smith, evelyn_harris],
             [mark_smith, freddy_smith, joe_smith, francis_smith]).
 
@@ -150,7 +177,7 @@ least_common_ancestor(Person1, Person2, Ancestor) :-
 exists_closer_ancestor(Person1, Person2, Ancestor) :-
      descendent(Descendent, Ancestor),
      ancestor(Descendent,Person1),
-     ancestor(Descendent,Person2).
+     ancestor(Descendent,Person2),!.
 
 % Do Person1 and Person2 have a common ancestor?
 % blood(?Person1, ?Person2). %% blood relative
@@ -214,16 +241,14 @@ aunt(Aunt, Person) :-
 % a cousin by this rule.
 
 cousin(Cousin,Person) :-
-    blood(Cousin, Person),
+    %blood(Cousin, Person),
     %just gets one common ancestor
-    least_common_ancestor(Cousin, Person, Ancestor), !,
-
-
-    (parent(Ancestor, Elder),
+    least_common_ancestor(Cousin, Person, Ancestor),
+    father(Ancestor, Elder),
     ancestor(Elder, Person),
     Elder \= Cousin,
     not(ancestor(Elder, Cousin)),
-    not(sibling(Elder, Cousin))).
+    not(sibling(Elder, Cousin)).
 
 %% 1st cousin, 2nd cousin, 3rd once removed, etc.
 % cousin_type(+Person1, +Person2, -CousinType, -Removed).
@@ -241,9 +266,8 @@ absolute_value(X,Val) :-
 
 cousin_type(Person1, Person2, CousinType, Removed) :-
     cousin(Person1, Person2),
-    (least_common_ancestor(Person1, Person2, Ancestor)),
+    least_common_ancestor(Person1, Person2, Ancestor),
     married(Ancestor,_),
-
     generations(Ancestor, Person1, Gen1),
     generations(Ancestor, Person2, Gen2),
     absolute_value((Gen2 - Gen1), Removed),
