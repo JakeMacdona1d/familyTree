@@ -144,7 +144,8 @@ least_common_ancestor(Person1, Person2, Ancestor) :-
 
     %since this will exhaustively try to prove itself true,
     %if it returns false, then the ancestor given is true.
-    not(exists_closer_ancestor(Person1, Person2, Ancestor)).
+    not(exists_closer_ancestor(Person1, Person2, Ancestor)),
+    Person1\=Person2.
 
 exists_closer_ancestor(Person1, Person2, Ancestor) :-
      descendent(Descendent, Ancestor),
@@ -155,7 +156,8 @@ exists_closer_ancestor(Person1, Person2, Ancestor) :-
 % blood(?Person1, ?Person2). %% blood relative
 blood(Person1,Person2) :-
     ancestor(Ancestor,Person1),
-    ancestor(Ancestor,Person2).
+    ancestor(Ancestor,Person2),
+    Person1 \= Person2.
 
 % Are Person1 and Person2 on the same list 2nd are of a parent_list record.
 % sibling(?Person1, Person2).
@@ -210,12 +212,15 @@ aunt(Aunt, Person) :-
 % like if a brother is also a cousin,
 % the cousin-brother would not be considered
 % a cousin by this rule.
+
 cousin(Cousin,Person) :-
+    blood(Cousin, Person),
     %just gets one common ancestor
-    (least_common_ancestor(Cousin, Person, Ancestor),!),
+    least_common_ancestor(Cousin, Person, Ancestor),
+    married(Ancestor,_),
     parent(Ancestor, Elder),
     ancestor(Elder, Person),
-    Elder \== Cousin,
+    Elder \= Cousin,
     not(ancestor(Elder, Cousin)),
     not(sibling(Elder, Cousin)).
 
@@ -226,6 +231,7 @@ getMinValue(X,Y, Min) :-
     (X < Y, Min is X, !);
     Min is Y.
 
+
 %Yes, I am aware of the built in abs function.
 %But! For this assignment, built in functions are bad :d
 absolute_value(X,Val) :-
@@ -234,7 +240,8 @@ absolute_value(X,Val) :-
 
 cousin_type(Person1, Person2, CousinType, Removed) :-
     cousin(Person1, Person2),
-    (least_common_ancestor(Person1, Person2, Ancestor),!),
+    least_common_ancestor(Person1, Person2, Ancestor),
+    married(Ancestor,_),
     generations(Ancestor, Person1, Gen1),
     generations(Ancestor, Person2, Gen2),
     absolute_value((Gen2 - Gen1), Removed),
